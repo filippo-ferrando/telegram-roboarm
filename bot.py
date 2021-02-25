@@ -1,77 +1,64 @@
-import requests
-import datetime
-import Rpi.GPIO as GPIO
+import sys
 import time
-
-servoPin = x #sostituisci con il pin del servo
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(servoPIN, GPIO.OUT)
-
-p = GPIO.PWM(servoPin, 50)
-p.start(2.5)
-
-class BotHandler:
-    def __init__(self, token):
-            self.token = token
-            self.api_url = "https://api.telegram.org/bot{}/".format(token)
-
-    #url = "https://api.telegram.org/bot<token>/"
-
-    def get_updates(self, offset=0, timeout=30):
-        method = 'getUpdates'
-        params = {'timeout': timeout, 'offset': offset}
-        resp = requests.get(self.api_url + method, params)
-        result_json = resp.json()['result']
-        return result_json
-
-    def send_message(self, chat_id, text):
-        params = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML'}
-        method = 'sendMessage'
-        resp = requests.post(self.api_url + method, params)
-        return resp
-
-    def get_first_update(self):
-        get_result = self.get_updates()
-
-        if len(get_result) > 0:
-            last_update = get_result[0]
-        else:
-            last_update = None
-
-        return last_update
+import random
+import datetime
+import telepot
+#import Rpi.GPIO as GPIO
 
 
-token = '1608661768:AAGFN2sY7j61NbkXKVVAqhMaNSMQyU6f7fA' #Token of your bot
-chatbot_bot = BotHandler(token) #Your bot's name
+#servo1Pin = x #sostituisci con il pin del servo
+#servo2Pin = x2
+#servo3Pin = x2
 
-def main():
-    new_offset = 0
-    print('hi, now launching...')
+#GPIO.setmode(GPIO.BCM)
 
-    while True:
-        all_updates=chatbot_bot.get_updates(new_offset)
+#GPIO.setup(servo1PIN, GPIO.OUT)
+#GPIO.setup(servo2PIN, GPIO.OUT)
+#GPIO.setup(servo3PIN, GPIO.OUT)
 
-        if len(all_updates) > 0:
-            for current_update in all_updates:
-                print(current_update)
-                first_update_id = current_update['update_id']
-                if 'text' not in current_update['message']:
-                    first_chat_text='New member'
-                else:
-                    first_chat_text = current_update['message']['text']
-                first_chat_id = current_update['message']['chat']['id']
-                if 'first_name' in current_update['message']:
-                    first_chat_name = current_update['message']['chat']['first_name']
-                elif 'new_chat_member' in current_update['message']:
-                    first_chat_name = current_update['message']['new_chat_member']['username']
-                elif 'from' in current_update['message']:
-                    first_chat_name = current_update['message']['from']['first_name']
-                else:
-                    first_chat_name = "unknown"
+#p1 = GPIO.PWM(servo1Pin, 50)
+#p1.start(2.5)
 
-                if first_chat_text == 'gira':
-                    chatbot_bot.send_message(first_chat_id, 'inserisci numero ' + first_chat_name)
-                    new_offset = first_update_id + 1
-                elif type(int(first_chat_text)) == int:
-                    p.ChangeDutyCicle(int(first_chat_text))
+#p2 = GPIO.PWM(servo2Pin, 50)
+#p2.start(2.5)
+
+#p3 = GPIO.PWM(servo3Pin, 50)
+#p3.start(2.5)
+
+def gira(pin, dutyCicle):
+    if pin == "1":
+        #p1.ChangeDutyCicle(dutyCicle)
+        print(f"moving 1 servo di {dutyCicle}")
+    elif pin == "2":
+        #p2.ChangeDutyCicle(dutyCicle)
+        print(f"moving 2 servo di {dutyCicle}")
+    elif pin == "3":
+        #p3.ChangeDutyCicle(dutyCicle)
+        print(f"moving 3 servo di {dutyCicle}")
+
+def handle(msg):
+    chat_id = msg['chat']['id']
+    command = msg['text']
+
+    comandoCompleto = command.split(',')
+
+    if comandoCompleto[0] == 'primo':
+        bot.sendMessage(chat_id, "Muovo primo servo")
+        gira("1", comandoCompleto[-1])
+
+    if comandoCompleto[0] == 'secondo':
+        bot.sendMessage(chat_id, "Muovo secondo servo")
+        gira("2", comandoCompleto[-1])
+
+    if comandoCompleto[0] == 'terzo':
+        bot.sendMessage(chat_id, "Muovo terzo servo")
+        gira("3", comandoCompleto[-1])
+
+
+bot = telepot.Bot('1608661768:AAGFN2sY7j61NbkXKVVAqhMaNSMQyU6f7fA')
+bot.message_loop(handle)
+
+print("Listening...")
+
+while 1:
+    time.sleep(1)
