@@ -3,11 +3,11 @@ import time
 import random
 import datetime
 import telepot
-#import Rpi.GPIO as GPIO
+from gpiozero import Servo
 
 
-#servo1Pin = x #sostituisci con il pin del servo
-#servo2Pin = x2
+#servo1Pin = Servo(17) #sostituisci con il pin del servo
+#servo2Pin = Servo(18)
 #servo3Pin = x2
 
 #GPIO.setmode(GPIO.BCM)
@@ -32,11 +32,11 @@ global servo1val, servo2val, servo3val
 def gira(pin, dutyCicle):
     global servo1val, servo2val, servo3val
     if pin == "1":
-        #p1.ChangeDutyCicle(dutyCicle)
+        #servo1Pin.value(dutyCicle)
         print(f"Muovo 1 servo di {dutyCicle}")
         servo1val = dutyCicle
     elif pin == "2":
-        #p2.ChangeDutyCicle(dutyCicle)
+        #servo2Pin.value(dutyCicle)
         print(f"Muovo 2 servo di {dutyCicle}")
         servo2val = dutyCicle
     elif pin == "3":
