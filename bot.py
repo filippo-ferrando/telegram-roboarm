@@ -6,21 +6,21 @@ import telepot
 import RPi.GPIO as GPIO
 
 
-#servo1Pin = 17 #sostituisci con il pin del servo
-#servo2Pin = 18
+servo1PIN = 17 #sostituisci con il pin del servo
+servo2PIN = 18
 #servo3Pin = x2
 
-#GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
-#GPIO.setup(servo1PIN, GPIO.OUT)
-#GPIO.setup(servo2PIN, GPIO.OUT)
+GPIO.setup(servo1PIN, GPIO.OUT)
+GPIO.setup(servo2PIN, GPIO.OUT)
 #GPIO.setup(servo3PIN, GPIO.OUT)
 
-#p1 = GPIO.PWM(servo1Pin, 50)
-#p1.start(2.5)
+p1 = GPIO.PWM(servo1PIN, 50)
+p1.start(2.5)
 
-#p2 = GPIO.PWM(servo2Pin, 50)
-#p2.start(2.5)
+p2 = GPIO.PWM(servo2PIN, 50)
+p2.start(2.5)
 
 #p3 = GPIO.PWM(servo3Pin, 50)
 #p3.start(2.5)
@@ -82,15 +82,15 @@ def handle(msg):
 
     if comandoCompleto[0] == 'primo':
         bot.sendMessage(chat_id, "Muovo primo servo di " + str(comandoCompleto[-1]))
-        gira("1", float(comandoCompleto[-1]))
+        gira("1", (float(comandoCompleto[-1])/18) +2 )
 
     if comandoCompleto[0] == 'secondo':
         bot.sendMessage(chat_id, "Muovo secondo servo di " + str(comandoCompleto[-1]))
-        gira("2", float(comandoCompleto[-1]))
+        gira("2", (float(comandoCompleto[-1])/18) +2 )
 
     if comandoCompleto[0] == 'terzo':
         bot.sendMessage(chat_id, "Muovo terzo servo di " + str(comandoCompleto[-1]))
-        gira("3", float(comandoCompleto[-1]))
+        gira("3", (float(comandoCompleto[-1])/18) +2 )
 
 
 bot = telepot.Bot('1608661768:AAGFN2sY7j61NbkXKVVAqhMaNSMQyU6f7fA')
