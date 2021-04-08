@@ -34,6 +34,18 @@ DEFAULT = 2.5
 
 global servo1val, servo2val, servo3val, servo4val
 
+servo1val = DEFAULT
+p1.ChangeDutyCycle(2.5)
+
+servo2val = DEFAULT
+p2.ChangeDutyCycle(2.5)
+
+servo3val = DEFAULT
+p3.ChangeDutyCycle(2.5)
+
+servo4val = DEFAULT
+p4.ChangeDutyCycle(2.5)
+
 def gira(pin, dutyCicle):
     global servo1val, servo2val, servo3val, servo4val
     if pin == "1":
