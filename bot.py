@@ -130,7 +130,7 @@ def handle(msg):
         gira("4", (float(comandoCompleto[-1])/18)+2)
 
 
-bot = telepot.Bot('1608661768:AAGFN2sY7j61NbkXKVVAqhMaNSMQyU6f7fA')
+bot = telepot.Bot('1617506018:AAGUkkTv9ScB9eN8uNp6xiM0g9F9vWJguHo')
 bot.message_loop(handle)
 
 print("Listening...")
