@@ -10,6 +10,7 @@ servo1PIN = 17 #sostituisci con il pin del servo
 servo2PIN = 18
 servo3PIN = 27
 servo4PIN = 22
+servo5PIN = 24
 
 GPIO.setmode(GPIO.BCM)
 
@@ -17,6 +18,7 @@ GPIO.setup(servo1PIN, GPIO.OUT)
 GPIO.setup(servo2PIN, GPIO.OUT)
 GPIO.setup(servo3PIN, GPIO.OUT)
 GPIO.setup(servo4PIN, GPIO.OUT)
+GPIO.setup(servo5PIN, GPIO.OUT)
 
 p1 = GPIO.PWM(servo1PIN, 50)
 p1.start(2.5)
@@ -30,9 +32,12 @@ p3.start(2.5)
 p4 = GPIO.PWM(servo4PIN, 50)
 p4.start(2.5)
 
+p5 = GPIO.PWM(servo5PIN, 50)
+p5.start(2.5)
+
 DEFAULT = 2.5
 
-global servo1val, servo2val, servo3val, servo4val
+global servo1val, servo2val, servo3val, servo4val, servo5val
 
 servo1val = DEFAULT
 p1.ChangeDutyCycle(2.5)
@@ -46,8 +51,11 @@ p3.ChangeDutyCycle(2.5)
 servo4val = DEFAULT
 p4.ChangeDutyCycle(2.5)
 
+servo5val = DEFAULT
+p5.ChangeDutyCycle(2.5)
+
 def gira(pin, dutyCicle):
-    global servo1val, servo2val, servo3val, servo4val
+    global servo1val, servo2val, servo3val, servo4val, servo5val
     if pin == "1":
         p1.ChangeDutyCycle(dutyCicle)
         print(f"Muovo 1 servo di {dutyCicle}")
@@ -63,10 +71,28 @@ def gira(pin, dutyCicle):
     elif pin == "4":
         p4.ChangeDutyCycle(dutyCicle)
         print(f"Muovo 4 servo di {dutyCicle}")
+    elif pin == "5":
+        p5.ChangeDutyCycle(dutyCicle)
+        print(f"Muovo 5 servo di {dutyCicle}")
+
+def reset():
+    global servo1val, servo2val, servo3val, servo4val, servo5val
+    gira("1", DEFAULT)
+    gira("2", DEFAULT)
+    gira("3", DEFAULT)
+    gira("4", DEFAULT)
+    gira("5", DEFAULT)
+    servo1val = DEFAULT
+    servo2val = DEFAULT
+    servo3val = DEFAULT
+    servo4val = DEFAULT
+    servo5val = DEFAULT
+
 
 def handle(msg):
-    global servo1val, servo2val, servo3val, servo4val
+    global servo1val, servo2val, servo3val, servo4val, servo5val
 
+    servo5val=DEFAULT
     servo4val=DEFAULT
     servo2val=DEFAULT
     servo3val=DEFAULT
@@ -77,13 +103,17 @@ def handle(msg):
 
     comandoCompleto = command.split(',')
 
+    # -- INFO FOR ALL SERVO --
     if comandoCompleto[-1] == 'info':
         bot.sendMessage(chat_id, "Sending info: ")
         bot.sendMessage(chat_id, "Servo 1 --> " + str(servo1val))
         bot.sendMessage(chat_id, "Servo 2 --> " + str(servo2val))
         bot.sendMessage(chat_id, "Servo 3 --> " + str(servo3val))
         bot.sendMessage(chat_id, "Servo 4 --> " + str(servo4val))
+        bot.sendMessage(chat_id, "Servo 5 --> " + str(servo5val))
+    # -- FINISH BLOCK --
 
+    # -- INFO FOR SINGLE SERVO --
     if comandoCompleto[0] == 'info' and comandoCompleto[-1] == 'primo':
         bot.sendMessage(chat_id, "Sending info: ")
         bot.sendMessage(chat_id, "Servo 1 --> " + str(servo1val))
@@ -100,19 +130,18 @@ def handle(msg):
         bot.sendMessage(chat_id, "Sending info: ")
         bot.sendMessage(chat_id, "Servo 4 --> " + str(servo4val))
 
+    if comandoCompleto[0] == 'info' and comandoCompleto[-1] == 'quinto':
+        bot.sendMessage(chat_id, "Sending info: ")
+        bot.sendMessage(chat_id, "Servo 5 --> " + str(servo5val))
+    # -- FINISH BLOCK --
 
-
+    # -- RESET ALL SERVO --
     if comandoCompleto[0] == 'reset':
         bot.sendMessage(chat_id, "Azzero i servo")
-        gira("1", DEFAULT)
-        gira("2", DEFAULT)
-        gira("3", DEFAULT)
-        gira("4", DEFAULT)
-        servo1val = DEFAULT
-        servo2val = DEFAULT
-        servo3val = DEFAULT
-        servo4val = DEFAULT
-
+        reset()
+    # -- FINISH BLOCK --
+        
+    # -- MOVE SERVO --
     if comandoCompleto[0] == 'primo':
         bot.sendMessage(chat_id, "Muovo primo servo di " + str(comandoCompleto[-1]))
         gira("1", (float(comandoCompleto[-1])/18)+2)
@@ -128,6 +157,17 @@ def handle(msg):
     if comandoCompleto[0] == 'quarto':
         bot.sendMessage(chat_id, "Muovo quarto servo di " + str(comandoCompleto[-1]))
         gira("4", (float(comandoCompleto[-1])/18)+2)
+
+    if comandoCompleto[0] == 'quinto':
+        bot.sendMessage(chat_id, "Muovo quinto servo di " + str(comandoCompleto[-1]))
+        gira("5", (float(comandoCompleto[-1])/18)+2)
+    # -- FINISH BLOCK --
+
+
+    # -- FUNCTION SECTION --
+
+    # -- FINISH BLOCK --
+
 
 
 bot = telepot.Bot('1617506018:AAGUkkTv9ScB9eN8uNp6xiM0g9F9vWJguHo')
