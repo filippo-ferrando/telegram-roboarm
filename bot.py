@@ -87,6 +87,7 @@ def reset():
     servo3val = DEFAULT
     servo4val = DEFAULT
     servo5val = DEFAULT
+    print("resettato")
 
 
 def handle(msg):
