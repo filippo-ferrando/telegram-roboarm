@@ -1,5 +1,3 @@
-# Codice
+# Robotic arm controlled via Telegram
 
-## Controllo tramite Telegram Bot
-
-Grazie ad un Raspberry pi e alle API di Telegram, controlliamo il braccio (i suoi 3 servo) inviando i comandi al nostro bot opportunamente creato
+Via the telegram API and a rapsberry pi, we have created a telegram bot wich send the command to a raspberry pi.

@@ -6,7 +6,7 @@ import telepot
 import RPi.GPIO as GPIO
 
 
-servo1PIN = 17 #sostituisci con il pin del servo
+servo1PIN = 17 # substitute with servo pin
 servo2PIN = 18
 servo3PIN = 27
 servo4PIN = 22
@@ -162,16 +162,9 @@ def handle(msg):
     if comandoCompleto[0] == 'quinto':
         bot.sendMessage(chat_id, "Muovo quinto servo di " + str(comandoCompleto[-1]))
         gira("5", (float(comandoCompleto[-1])/18)+2)
-    # -- FINISH BLOCK --
 
 
-    # -- FUNCTION SECTION --
-
-    # -- FINISH BLOCK --
-
-
-
-bot = telepot.Bot('1617506018:AAGUkkTv9ScB9eN8uNp6xiM0g9F9vWJguHo')
+bot = telepot.Bot('bot hash')
 bot.message_loop(handle)
 
 print("Listening...")
